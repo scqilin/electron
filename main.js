@@ -11,6 +11,13 @@ const createWindow = () => {
     })
   
     win.loadFile('index.html')
+
+    // 监听键盘事件，实现后退功能
+    win.webContents.on('before-input-event', (event, input) => {
+      if (input.control && input.key.toLowerCase() === 'z') {
+        win.webContents.goBack()
+      }
+    })
   }
 
 // 等待应用准备就绪后创建窗口
