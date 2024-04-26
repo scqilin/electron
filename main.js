@@ -12,6 +12,10 @@ const createWindow = () => {
   
     win.loadFile('index.html')
 
+    const Database = require("better-sqlite3");
+    const db = new Database("db.db", { verbose: console.log, nativeBinding: "./node_modules/better-sqlite3/build/Release/better_sqlite3.node" });
+    console.log('db :>> ', db);
+
     // 监听键盘事件，实现后退功能
     win.webContents.on('before-input-event', (event, input) => {
       if (input.control && input.key.toLowerCase() === 'z') {
