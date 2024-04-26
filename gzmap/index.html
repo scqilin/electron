@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./d3.min.js"></script>
+    <script src="./mapsvg.js"></script>
+    <script src="./map.js"></script>
+    <style>
+        body {
+            background-color: black;
+            margin: 0;
+            padding: 0;
+        }
+
+        .modal {
+            display: inline-block;
+            min-width: max-content;
+            padding: 16px;
+            border-radius: 8px;
+            overflow: visible;
+            position: absolute;
+            color: white;
+            background: #405BF4;
+            border: 2px solid;
+            transform: translate(6.5em, -4.35em);
+            border-image: linear-gradient(180deg, rgba(23, 127, 240, 0), rgba(42, 212, 255, 1)) 2 2;
+        }
+
+        .modal .top-decoration-line {
+            display: inline-block;
+            position: absolute;
+            top: -2px;
+            left: 20px;
+            width: 52px;
+            height: 2px;
+            border-radius: 2px;
+            background: #FFF7F1;
+            box-shadow: 0px 0px 3px 1px #FF3C03, 0px 0px 3px 0px #FF5858;
+            border: 1px solid;
+            border-image: linear-gradient(270deg, rgba(234, 173, 43, 0), rgba(234, 173, 43, 1), rgba(255, 228, 190, 1), rgba(255, 174, 0, 1), rgba(234, 173, 43, 0)) 1 1;
+        }
+
+        .modal .modal-header {
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 20px;
+        }
+
+        .modal .modal-body {
+            margin-top: 10px;
+            border-left: 2px solid #FF3C03a0;
+            border-radius: 1px;
+            padding-left: 14px;
+        }
+        .modal .modal-body2 {
+            margin-top: 10px;
+            border-left: 2px solid #5ade9da0;
+            border-radius: 1px;
+            padding-left: 14px;
+        }
+
+        .modal .node-name {
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 22px;
+            margin-top: 4px;
+        }
+
+        .modal .offline {
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .modal .offline .circle {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 6px;
+            background: #FFF7F1;
+            box-shadow: 0px 0px 3px 1px #FF3C03, 0px 0px 3px 0px #FF5858;
+            border: 1px solid #FF7C40;
+            margin-right: 4px;
+        }
+        .modal .offline .circle2 {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 6px;
+            background: #FFF7F1;
+            box-shadow: 0px 0px 3px 1px #5ade9d, 0px 0px 3px 0px #5ade9d;
+            border: 1px solid #5ade9d;
+            margin-right: 4px;
+        }
+        .back{
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            font-size: 20px;
+            text-decoration: none;
+            z-index: 999;
+
+            a {
+                color: white;
+                text-decoration: none;
+            }
+        }
+    </style>
+    <title>贵州地图</title>
+</head>
+
+<body>
+    <div class="back"><a href="../index.html" target="_self">back</a></div>
+    <div id="map" style="width: 1000px;height: 800px;"></div>
+    <script>
+        const dom = document.getElementById('map');
+        const legend = {
+            "正常区域": "#5ade9d",
+            "异常区域": "#bf3d21",
+            "无节点区域": "#455971"
+        }
+        const map = new Mapguizhou(dom, {legend:legend});
+        const data = {
+            "series": [
+                {
+                    name: "贵阳", value: Math.random() * 100 | 0,
+                    color:"#5ade9d",
+                    info: {
+                        title: "2021-11-11 24:34:00",
+                        // list:["节点1","节点2","节点2"],
+                        // tag:"离线",
+                        data:{
+                            "离线":["节点1","节点2"],
+                            "正常":["节点3","节点4"]
+                        }
+                    }
+                },
+                {
+                    name: "毕节", value: Math.random() * 100 | 0,
+                    color:"#bf3d21",
+                    info: {
+                        title: "2021-11-11 24:34:00",
+                        data:{
+                            "离线":["节点1","节点2"],
+                            "正常":["节点3","节点2"]
+                        }
+                    }
+                },
+                {
+                    name: "安顺", value: Math.random() * 100 | 0,
+                    color:"#bf3d21",
+                    info: {
+                        title: "2021-11-11 24:34:00",
+                        data:{
+                            "离线":["节点1"],
+                            "正常":["节点3","节点2"]
+                        }
+                    }
+                },
+                {
+                    name: "六盘水", value: Math.random() * 100 | 0,
+                    color:"#5ade9d",
+                    info: {
+                        title: "2021-11-11 24:34:00",
+                        data:{
+                            "离线":["节点1","节点2"],
+                            "正常":["节点3"]
+                        }
+                    }
+                },
+                {
+                    name: "遵义", value: Math.random() * 100 | 0,
+                    color:"#5ade9d",
+                    info: {
+                        title: "2021-11-11 24:34:00",
+                        data:{
+                            "离线":["节点1","节点2"],
+                            "正常":["节点3"]
+                        }
+                    }
+                },
+                {
+                    name: "铜仁", value: Math.random() * 100 | 0,
+                    color:"#5ade9d",
+                    info: {
+                        title: "2021-11-11 24:34:00",
+                        data:{
+                            "离线":["节点1","节点2"],
+                            "正常":["节点3"]
+                        }
+                    }
+                },
+                {
+                    name: "凯里", value: Math.random() * 100 | 0,
+                    color:"#5ade9d",
+                    info: {
+                        title: "2021-11-11 24:34:00",
+                        data:{
+                            "离线":["节点1","节点2"],
+                            "正常":["节点3"]
+                        }
+                    }
+                },
+                // {
+                //     name: "都匀", value: Math.random() * 100 | 0,
+                //     color:"#5ade9d",
+                //     info: {
+                //         title: "2021-11-11 24:34:00",
+                //         data:{
+                //             "离线":["节点1"],
+                //             "正常":["节点3"]
+                //         }
+                //     }
+                // },
+                // {
+                //     name: "兴义", value: Math.random() * 100 | 0,
+                //     color:"#455971",
+                //     info: {
+                //         title: "2021-11-11 24:34:00",
+                //         data:{
+                //             "离线":["节点1"],
+                //             "正常":["节点3"]
+                //         }
+                //     }
+                // },
+            ]
+        }
+        map.updateData(data);
+    </script>
+</body>
+
+</html>
